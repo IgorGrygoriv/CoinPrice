@@ -50,12 +50,9 @@
         <div class="crypto-list">
           <ul>
             {% for coin in data %}
-            <form action="{% url 'crypto_details' %}" method="POST">
-              {% csrf_token %}
-              <li class="crypto-item">
-                <button type="submit" class="crypto-button" name="coin_id" value="{{ coin.id }}">{{ coin.name }}</button>
+              <li class="crypto-item" data-id="{{ coin.id }}">
+                {{ coin.name }}
               </li>
-            </form>
             {% endfor %}
           </ul>
         </div>
@@ -68,15 +65,9 @@
 
       <!-- Main Content Area for Details -->
       <div class="crypto-content">
-        <h2>{{ coin_data.name }}</h2>
         <div class="crypto-card">
-          <div class="crypto-details">
-            <p><strong>Ticker:</strong> {{ coin_data.symbol }}</p>
-            <p><strong>Price:</strong> {{ coin_data.current_price }}</p>
-            <p><strong>24h Price Change:</strong> ${{ coin_data.price_change_24h}}</p>
-            <p><strong>24h % Change:</strong> {{ coin_data.price_change_percentage_24h}}%</p>
-            <p><strong>24h High:</strong> {{coin_data.high_24h}}</p>
-            <p><strong>24h Low:</strong> {{coin_data.low_24h}}</p>
+          <div class="crypto-details" id="crypto-details">
+            <h2>Select a coin to view its details</h2>
           </div>
         </div>
       </div>
@@ -99,7 +90,40 @@
     />
 
     <!-- Custom JS  -->
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('.crypto-item').on('click', function() {
+            var coinId = $(this).data('id');
+            console.log("Coin ID clicked:", coinId);
+    
+            $.ajax({
+                url: '{% url "crypto_details" %}',  
+                method: 'POST',
+                data: {
+                  'coin_id': coinId,  
+                  'csrfmiddlewaretoken': '{{ csrf_token }}'  
+                },
+                success: function(response) {
+                    console.log("AJAX response:", response); 
+                    $('#crypto-details').html(`
+                        <h2>${response.name}</h2>
+                        <p><strong>Ticker:</strong> ${response.symbol.toUpperCase()}</p>
+                        <p><strong>Current Price:</strong> $${response.current_price}</p>
+                        <p><strong>Price Change (24h):</strong> $${response.price_change_24h}</p>
+                        <p><strong>Percent Price Change (24h):</strong> ${response.price_change_percentage_24h}%</p>
+                        <p><strong>High (24h):</strong> $${response.high_24h}</p>
+                        <p><strong>Low (24h):</strong> $${response.low_24h}</p>
+                    `);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error); 
+                    $('#crypto-details').html("<h2>Error fetching coin data</h2>");
+                }
+            });
+        });
+    });
+      </script>
 
           
 
