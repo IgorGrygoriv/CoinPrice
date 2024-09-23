@@ -63,15 +63,17 @@
         </div>
       </div>
 
-      <!-- Main Content Area for Details -->
-      <div class="crypto-content">
-        <div class="crypto-card">
-          <div class="crypto-details" id="crypto-details">
-            <h2>Select a coin to view its details</h2>
-          </div>
+      <!-- Main Content Area -->
+      <div class="row crypto-content">
+        <div class="col-md-8" id="chart-container">
+          <div id="chart"></div>
+        </div>
+        <div class="col-md-4 crypto_details" style="background-color: lightgrey; border-radius: 20px" id="crypto-details">
+          <h2 >Select a coin to view its details</h2>
         </div>
       </div>
     </div>
+  </div>
 
     <!-- Footer -->
     <footer>
@@ -91,42 +93,65 @@
 
     <!-- Custom JS  -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
       $(document).ready(function() {
-        $('.crypto-item').on('click', function() {
-            var coinId = $(this).data('id');
-            console.log("Coin ID clicked:", coinId);
-    
-            $.ajax({
-                url: '{% url "crypto_details" %}',  
-                method: 'POST',
-                data: {
-                  'coin_id': coinId,  
-                  'csrfmiddlewaretoken': '{{ csrf_token }}'  
-                },
-                success: function(response) {
-                    console.log("AJAX response:", response); 
-                    $('#crypto-details').html(`
-                        <h2>${response.name}</h2>
-                        <p><strong>Ticker:</strong> ${response.symbol.toUpperCase()}</p>
-                        <p><strong>Current Price:</strong> $${response.current_price}</p>
-                        <p><strong>Price Change (24h):</strong> $${response.price_change_24h}</p>
-                        <p><strong>Percent Price Change (24h):</strong> ${response.price_change_percentage_24h}%</p>
-                        <p><strong>High (24h):</strong> $${response.high_24h}</p>
-                        <p><strong>Low (24h):</strong> $${response.low_24h}</p>
-                    `);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error:", error); 
-                    $('#crypto-details').html("<h2>Error fetching coin data</h2>");
-                }
-            });
-        });
-    });
+          $('.crypto-item').on('click', function() {
+              var coinId = $(this).data('id');
+              console.log("Coin ID clicked:", coinId);
+      
+              $.ajax({
+                  url: '{% url "crypto_details" %}',  
+                  method: 'POST',
+                  data: {
+                    'coin_id': coinId,  
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'  
+                  },
+                  success: function(response) {
+                      console.log("AJAX response:", response);
+      
+                      var ohlc = response.ohlc_data;
+                      var trace = {
+                        x: ohlc.date, 
+                        open: ohlc.open,
+                        high: ohlc.high,
+                        low: ohlc.low,  
+                        close: ohlc.close,  
+                        type: 'candlestick', 
+                        xaxis: 'x',
+                        yaxis: 'y'
+                    };
+                    
+                    var layout = {
+                        xaxis: {
+                            title: 'Date',
+                            type: 'category'
+                        },
+                        yaxis: {
+                            title: 'Price (USD)'
+                        }
+                    };
+                            
+                      Plotly.newPlot('chart', [trace], layout);
+      
+                      var filtered = response.filtered_data;
+                      $('#crypto-details').html(`
+                          <h2>${filtered.name}</h2>
+                          <p><strong>Ticker:</strong> ${filtered.symbol.toUpperCase()}</p>
+                          <p><strong>Current Price:</strong> $${filtered.current_price}</p>
+                          <p><strong>Price Change (24h):</strong> $${filtered.price_change_24h}</p>
+                          <p><strong>Percent Price Change (24h):</strong> ${filtered.price_change_percentage_24h}%</p>
+                          <p><strong>High (24h):</strong> $${filtered.high_24h}</p>
+                          <p><strong>Low (24h):</strong> $${filtered.low_24h}</p>
+                      `);
+                  },
+                  error: function(xhr, status, error) {
+                      console.error("Error:", error); 
+                      $('#crypto-details').html("<h2>Error fetching coin data</h2>");
+                  }
+              });
+          });
+      });
       </script>
-
-          
-
-
   </body>
 </html>
