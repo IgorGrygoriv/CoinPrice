@@ -1,0 +1,121 @@
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    height: calc(
+      100vh - 60px - 40px
+    ); /* Full height minus navbar and smaller footer */
+    background-color: #f4f6f9;
+  }
+
+  /* Left sidebar for cryptocurrency list */
+  .crypto-sidebar {
+    width: 250px;
+    background-color: #343a40;
+    padding: 20px;
+    color: white;
+    border-right: 2px solid #ddd;
+    max-height: 100%; /* Ensure it fits within the container */
+  }
+
+  /* Make the sidebar take full width on smaller screens */
+  @media (max-width: 768px) {
+    .crypto-sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 2px solid #ddd;
+    }
+  }
+  .crypto-list {
+    overflow-y: auto;
+    max-height: 45%;
+  }
+  .crypto-watchlist {
+    overflow-y: auto;
+    max-height: 45%;
+  }
+  .crypto-sidebar h5 {
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+
+  .crypto-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .crypto-sidebar ul li {
+    display: flex;
+    align-items: center;
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    background-color: #495057;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .crypto-sidebar ul li:hover {
+    background-color: #0d6efd;
+    color: white;
+  }
+
+  .crypto-sidebar ul li i {
+    margin-right: 10px;
+  }
+
+  /* Main content area */
+  .crypto-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #ffffff;
+    overflow-y: auto;
+  }
+
+  /* Stack content on smaller screens */
+  @media (max-width: 768px) {
+    .crypto-content {
+      padding: 20px;
+    }
+  }
+
+  .crypto-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #343a40;
+  }
+
+  .crypto-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .crypto-details p {
+    font-size: 1.2rem;
+    color: #495057;
+    margin-bottom: 10px;
+  }
+
+  .crypto-details p strong {
+    font-weight: 600;
+  }
+  .crypto-button {
+    color: #495057;
+  }
+  /* Footer styling */
+  footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 2px 0; /* Smaller padding for a slimmer footer */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+
+  footer a {
+    color: white;
+    text-decoration: underline;
+  }

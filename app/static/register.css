@@ -1,0 +1,74 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container for the form, ensuring it stays centered */
+.form-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f6f9;
+}
+
+/* Card-style register form */
+.register-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.register-card h2 {
+    margin-bottom: 20px;
+    color: #343a40;
+    text-align: center;
+}
+
+.form-control {
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    width: 100%;
+    padding: 12px;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0b5ed7;
+}
+
+/* Navbar stays at the top */
+.navbar {
+    margin-bottom: 0;
+}
+
+/* Footer stays at the bottom */
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: #0d6efd;
+}
