@@ -6,7 +6,23 @@ import pandas as pd
 from .config import api_key
 
 def landingPage(request):
-    return render(request, "app/index.html")
+    url = "https://api.coingecko.com/api/v3/simple/price"
+    params = {
+        'ids': 'bitcoin,ethereum,cardano',
+        'vs_currencies': 'usd',
+        'include_24hr_change': 'true',
+    }
+    headers = {
+        "accept": "application/json",
+        "x-cg-demo-api-key": api_key,
+    }
+    response = requests.get(url, headers=headers, params=params)
+    data = []        
+
+    if response.status_code == 200:
+        data = response.json()
+
+    return render(request, "app/index.html", {"data": data})
 
 def homepage(request):
     url = "https://api.coingecko.com/api/v3/coins/markets"
