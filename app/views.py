@@ -53,6 +53,7 @@ def homepage(request):
                 "price_change_percentage_24h": coin["price_change_percentage_24h"],
                 "high_24h": coin["high_24h"],
                 "low_24h": coin["low_24h"],
+                "image": coin["image"],
             }
             data.append(filtered_data)
     return render(request, "app/home.html", {"data": data})
@@ -84,6 +85,7 @@ def crypto_details(request):
                 "price_change_percentage_24h": coin["market_data"].get("price_change_percentage_24h"),
                 "high_24h": coin["market_data"]["high_24h"]["usd"],
                 "low_24h": coin["market_data"]["low_24h"]["usd"],
+                "image": coin["image"]["large"],
             }
 
             historical_data_response = requests.get(historical_data_url, headers=headers, params=params)

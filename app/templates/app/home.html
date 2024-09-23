@@ -51,8 +51,7 @@
           <ul>
             {% for coin in data %}
               <li class="crypto-item" data-id="{{ coin.id }}">
-                {{ coin.name }}
-              </li>
+                <img src="{{ coin.image }}" alt="{{ coin.name }}" height="25px" width="25px" class="me-2"/> {{coin.name }}</li>
             {% endfor %}
           </ul>
         </div>
@@ -136,7 +135,7 @@
       
                       var filtered = response.filtered_data;
                       $('#crypto-details').html(`
-                          <h2>${filtered.name}</h2>
+                          <h2 class="mt-2" ><img src="${filtered.image}" alt="${filtered.name}" class="me-3" height="50px" width="50px"/>${filtered.name}</h2>
                           <p><strong>Ticker:</strong> ${filtered.symbol.toUpperCase()}</p>
                           <p><strong>Current Price:</strong> $${filtered.current_price}</p>
                           <p><strong>Price Change (24h):</strong> $${filtered.price_change_24h}</p>
