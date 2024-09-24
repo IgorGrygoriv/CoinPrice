@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 import requests
-import logging
 import pandas as pd
 from .config import api_key
+from .forms import UserRegisterForm
 
 def landingPage(request):
     url = "https://api.coingecko.com/api/v3/simple/price"
@@ -86,6 +88,7 @@ def crypto_details(request):
                 "high_24h": coin["market_data"]["high_24h"]["usd"],
                 "low_24h": coin["market_data"]["low_24h"]["usd"],
                 "image": coin["image"]["large"],
+                "description": coin.get("description")["en"],
             }
 
             historical_data_response = requests.get(historical_data_url, headers=headers, params=params)
@@ -110,8 +113,30 @@ def crypto_details(request):
         else:
             return JsonResponse({'error': 'Coin not found or API error.'}, status=400)
 
-def login(request):
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('homepage')
+        else:
+            messages.info(request, "Username OR Password is incorrect")
     return render(request, "app/login.html")
 
 def register(request):
-    return render(request, "app/register.html")
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)  
+        if form.is_valid():
+            form.save()  
+            return redirect('login')
+    else:
+        form = UserRegisterForm()  
+
+    context = {"form": form}
+    return render(request, "app/register.html", context)
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
