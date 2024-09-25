@@ -14,7 +14,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'homepage' %}">CoinPrice</a>
+        <a class="navbar-brand" href="{% url 'landingPage' %}">CoinPrice</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -29,10 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Portfolio</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}">Home</a>
             </li>
             {% if user.is_authenticated %}
               <li class="nav-item">
@@ -61,16 +58,9 @@
             {% endfor %}
           </ul>
         </div>
-        <h5 class="pt-2">Watchlist</h5>
-        <div class="crypto-watchlist">
-          <ul>
-          </ul>
-        </div>
       </div>
 
-      <!-- Main Content Area -->
-      {% if user.is_authenticated %}
-    <!-- Main Content Area -->
+      {% if user.is_authenticated %}    
     <div class="row crypto-content">
         <div class="col-md-8 border border-dark border-3 d-flex align-items-center justify-content-center" id="chart-container" style="background-color: lightgrey; border-radius: 20px; height: 100%;">
             <div id="chart" style="width: 100%; height: 90%;"></div>
@@ -81,7 +71,7 @@
     </div>
 </div>
 {% else %}
-    <div class="alert alert-warning text-center mt-5" style="left: 300px;">
+    <div class="alert text-center mt-5" style="left: 300px;">
         <h2>Please log in to view cryptocurrency data.</h2>
         <p><a href="{% url 'login' %}" class="btn btn-primary">Sign In</a></p>
     </div>

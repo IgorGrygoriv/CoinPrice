@@ -27,11 +27,8 @@
   }
   .crypto-list {
     overflow-y: auto;
-    max-height: 45%;
-  }
-  .crypto-watchlist {
-    overflow-y: auto;
-    max-height: 45%;
+    max-height: 95%;
+    
   }
   .crypto-sidebar h5 {
     margin-bottom: 20px;
