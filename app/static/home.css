@@ -27,7 +27,7 @@
   }
   .crypto-list {
     overflow-y: auto;
-    max-height: 95%;
+    height: 75vh;
     
   }
   .crypto-sidebar h5 {
